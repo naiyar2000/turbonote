@@ -11,7 +11,7 @@ apps/web/dist/
 apps/web/.turbo/
 
 # firebase config
-app/server/firebase-service-account.json
+apps/server/firebase-service-account.json
 
 # Express build (if any transpile step)
 apps/server/dist/
