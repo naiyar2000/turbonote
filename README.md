@@ -82,6 +82,9 @@ PORT=4000
 FIREBASE_PROJECT_ID=your_project_id
 FIREBASE_CLIENT_EMAIL=your_service_account_email
 FIREBASE_PRIVATE_KEY="your_private_key"
+
+CLIENT_URL=http://localhost:3000
+
 ```
 
 #### In `apps/web/.env` (optional for public envs):
@@ -90,6 +93,7 @@ FIREBASE_PRIVATE_KEY="your_private_key"
 NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+NEXT_PUBLIC_BACKEND_URL=http://localhost:4000
 ```
 
 ---
