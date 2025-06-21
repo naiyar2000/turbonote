@@ -177,10 +177,6 @@ A guide for containerizing and deploying to Amazon EC2 will be included soon.
 
 MIT License © 2025 Naiyar
 
-```
-
----
-
 Let me know if you'd like:
 - [ ] Badges (build, license, etc.)
 - [ ] Docker deployment steps
@@ -188,7 +184,6 @@ Let me know if you'd like:
 - [ ] Contribution guide
 
 I'll add those instantly if needed.
-```
 
 
 
