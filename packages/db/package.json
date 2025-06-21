@@ -1,0 +1,15 @@
+{
+    "name": "@repo/db",
+    "version": "1.0.0",
+    "main": "prisma/generated/client",
+    "license": "MIT",
+    "prisma": {
+        "schema": "./prisma/schema.prisma"
+    },
+    "scripts": {
+        "generate": "prisma generate"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.10.1"
+    }
+}

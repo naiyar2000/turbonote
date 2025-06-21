@@ -1,0 +1,51 @@
+/* Light & Dark Mode Linked to Your Theme */
+
+.bn-editor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary);
+}
+
+.bn-editor-content {
+    padding: 2em;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1rem;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+
+.bn-container {
+    --bn-colors-editor-text: var(--foreground);
+    --bn-colors-editor-background: var(--background);
+    --bn-colors-menu-text: var(--foreground);
+    --bn-colors-menu-background: var(--card);
+    --bn-colors-tooltip-text: var(--popover-foreground);
+    --bn-colors-tooltip-background: var(--popover);
+    --bn-colors-hovered-text: var(--foreground);
+    --bn-colors-hovered-background: var(--muted);
+    --bn-colors-selected-text: var(--primary-foreground);
+    --bn-colors-selected-background: var(--primary);
+    --bn-colors-disabled-text: var(--muted-foreground);
+    --bn-colors-disabled-background: var(--muted);
+    --bn-colors-shadow: var(--ring);
+    --bn-colors-border: var(--border);
+    --bn-colors-side-menu: var(--sidebar);
+    --bn-color-highlight-colors: var(--chart-1);
+    /* You can cycle chart-1 to 5 */
+    --bn-border-radius: var(--radius-md);
+    --bn-font-family: var(--font-sans);
+
+}
+
+.bn-inline-content::before {
+    color: var(--foreground) !important;
+    opacity: 0.35;
+}
+
+svg.lucide-plus path {
+  stroke: red !important;
+}

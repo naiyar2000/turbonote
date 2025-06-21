@@ -1,0 +1,16 @@
+.tiptap-wrapper {
+  padding: 1rem;
+  background: var(--background, #fff);
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tiptap-wrapper blockquote {
+  border-left: 3px solid var(--gray-3, #ccc);
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #555;
+}

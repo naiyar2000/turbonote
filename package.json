@@ -1,0 +1,22 @@
+{
+  "name": "turbonote",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "npm@10.7.0",
+  "scripts": {
+    "dev:web": "turbo run dev --filter=web",
+    "dev:server": "turbo run dev --filter=server",
+    "build": "turbo run build",
+    "dev": "turbo run dev"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "turbo": "^2.5.4"
+  },
+  "devDependencies": {
+    "prisma": "^6.10.1"
+  }
+}

@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  notes         Note[] // notes authored by this user
+  favorites     Favorite[] // notes marked favorite
+  following     Follow[]       @relation("Following") // users this user is following
+  followers     Follow[]       @relation("Followers") // users who follow this user
+  notifications Notification[]
+  sharedAccess  SharedAccess[] // Notes shared with the user
+  settings      UserSettings?
+  featureFlags  FeatureFlag[]
+}
+
+model Note {
+  id        String   @id
+  title     String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  attachments   File[]
+  favoritedBy   Favorite[]
+  contentBlocks Json // Structured block-based content (like Notion blocks)
+
+  sharedWith SharedAccess[] // Users who have access (for collaboration)
+}
+
+model File {
+  id     Int    @id @default(autoincrement())
+  url    String
+  key    String
+  note   Note   @relation(fields: [noteId], references: [id])
+  noteId String
+}
+
+model Favorite {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  note   Note   @relation(fields: [noteId], references: [id])
+  userId String
+  noteId String
+
+  @@unique([userId, noteId]) // prevent duplicate favorites
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  follower    User   @relation("Following", fields: [followerId], references: [id])
+  following   User   @relation("Followers", fields: [followingId], references: [id])
+  followerId  String
+  followingId String
+
+  @@unique([followerId, followingId]) // prevent duplicate follows
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  read      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model UserSettings {
+  id       Int    @id @default(autoincrement())
+  theme    String @default("light")
+  language String @default("en")
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
+}
+
+model FeatureFlag {
+  id     String  @id @default(cuid())
+  key    String
+  value  Boolean
+  user   User    @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model SharedAccess {
+  id     Int    @id @default(autoincrement())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  noteId String
+  note   Note   @relation(fields: [noteId], references: [id])
+  role   String // 'viewer', 'editor', etc.
+}

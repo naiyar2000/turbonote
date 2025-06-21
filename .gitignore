@@ -1,0 +1,47 @@
+# Node dependencies
+node_modules/
+.pnpm/
+*.log
+*.lock
+
+# Next.js output (apps/web)
+apps/web/.next/
+apps/web/out/
+apps/web/dist/
+apps/web/.turbo/
+
+# Express build (if any transpile step)
+apps/server/dist/
+apps/server/build/
+
+# Prisma
+**/prisma/generated
+**/.prisma
+
+# Environment variables
+.env
+.env.*
+.env.*.local
+.env.local
+
+# Turbo cache
+.turbo/
+turbo/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Mac/Windows files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+*.tsbuildinfo
+
+# Misc
+*.tgz
+*.bak
