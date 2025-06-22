@@ -2,10 +2,10 @@
 import Editor from '@/app/component/Editor'
 import { useRootStore } from '@/app/store/rootStore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { createNote, fetchNoteById, updateNote } from '@/lib/api/notes'
+import { fetchNoteById } from '@/lib/api/notes'
 import { PartialBlock } from '@blocknote/core';
 import { SaveIcon } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -14,33 +14,34 @@ const HomePage = () => {
     const params = useParams()
     const id = params.id as string
 
+    const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "unsaved">("unsaved");
 
-    const handleSave = async (content: PartialBlock[]) => {
-        try {
-            if (id === "new") {
-                const newNote = await createNote({
-                    id: id,
-                    title: "New Note",
-                    contentBlocks: content,
-                    authorId: user?.id || "",
-                });
-                console.log("Note created successfully:", newNote);
-            } else {
-                const updatedNote = await updateNote(id, {
-                    title: selectedNote?.title || "Updated Note",
-                    contentBlocks: content,
-                });
-                console.log("Note updated successfully:", updatedNote);
-            }
-        } catch (error) {
-            console.error("Error creating note:", error);
-        }
-    }
+    // const handleSave = async (content: PartialBlock[]) => {
+    //     try {
+    //         if (id === "new") {
+    //             const newNote = await createNote({
+    //                 id: id,
+    //                 title: "New Note",
+    //                 contentBlocks: content,
+    //                 authorId: user?.id || "",
+    //             });
+    //             console.log("Note created successfully:", newNote);
+    //         } else {
+    //             const updatedNote = await updateNote(id, {
+    //                 title: selectedNote?.title || "Updated Note",
+    //                 contentBlocks: content,
+    //             });
+    //             console.log("Note updated successfully:", updatedNote);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error creating note:", error);
+    //     }
+    // }
 
     const fetchNotesDetails = async () => {
         try {
             setNotesLoading(true);
-            let noteId = id ? id : notes?.[0]?.id;
+            const noteId = id ? id : notes?.[0]?.id;
             if (noteId === undefined) {
                 console.error("No note ID found to fetch details.");
                 setNotesLoading(false);
@@ -77,9 +78,9 @@ const HomePage = () => {
             console.log("No notes available, fetching...");
         } else {
             fetchNotesDetails();
+            setSaveStatus("saved")
         }
     }, [notes])
-    const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "unsaved">("unsaved");
 
     const noteData = notes?.find(note => note.id === id);
     const noteTitle = noteData?.title || "New Note";

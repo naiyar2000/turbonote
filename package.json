@@ -10,6 +10,8 @@
     "dev:web": "turbo run dev --filter=web",
     "dev:server": "turbo run dev --filter=server",
     "build": "turbo run build",
+    "build:web": "turbo run build --filter=web",
+    "build:server": "turbo run build --filter=server",
     "dev": "turbo run dev"
   },
   "dependencies": {

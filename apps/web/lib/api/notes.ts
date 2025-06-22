@@ -1,6 +1,4 @@
 import { deleteWrapper, fetchWrapper, postWrapper, putWrapper } from "@/app/api";
-import { useRootStore } from "@/app/store/rootStore";
-import { useEffect } from "react";
 import { toast } from "sonner";
 
 export const fetchNotes = async () => {

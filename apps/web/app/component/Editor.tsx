@@ -10,7 +10,6 @@ import { PartialBlock } from '@blocknote/core';
 import { BlockNoteView } from "@blocknote/mantine";
 import { useTheme } from '@/components/theme-provider';
 import "./editor.css";
-import { SaveIcon } from 'lucide-react';
 import { socket } from "@/lib/api/socket";
 import { useParams } from "next/navigation";
 import debounce from "debounce";
@@ -68,7 +67,7 @@ export default function NoteEditor({ initialContent }: NoteEditorProps) {
         console.log("🔄 Updating note...");
         socket.emit("update_note", { noteId, content: currentDoc });
         if (createNewNote) {
-          let res = await createNote({
+          const res = await createNote({
             id: noteId,
             title: "New Note",
             contentBlocks: currentDoc,
@@ -76,7 +75,7 @@ export default function NoteEditor({ initialContent }: NoteEditorProps) {
           })
           if(res) {
             console.log("✅ Note created successfully:", res);
-            let userNotes = await fetchNotes();
+            const userNotes = await fetchNotes();
             setNotes(userNotes);
           } 
         } else {

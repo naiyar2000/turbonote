@@ -1,5 +1,4 @@
-import { create, StateCreator } from "zustand";
-import { devtools } from 'zustand/middleware'
+import { StateCreator } from "zustand";
 import { PortfolioStore } from "./rootStore";
 
 type ContentBlock = {

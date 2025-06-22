@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { Sidebar } from '../component/Sidebar';
 import { useFirebaseAuthTokenSync } from '@/hooks/useFirebaseAuthToken';
 import LoadingPage from '../loading';
 import { SidebarWrapper } from '../component/SidebarWrapper';

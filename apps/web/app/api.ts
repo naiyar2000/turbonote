@@ -28,7 +28,7 @@ const fetchWrapper = async (url: string) => {
         });
 }
 
-const postWrapper = async (url: string, data: any) => {
+const postWrapper = async (url: string, data: object) => {
     if (localStorage) {
         const token = localStorage.getItem("token");
         if (token) {
@@ -43,7 +43,7 @@ const postWrapper = async (url: string, data: any) => {
         });
 }
 
-const putWrapper = async (url: string, data: any) => {
+const putWrapper = async (url: string, data: object) => {
     if (localStorage) {
         const token = localStorage.getItem("token");
         if (token) {

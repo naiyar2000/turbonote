@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/server.Dockerfile
+      args:
+        DATABASE_URL: postgres://postgres:root@db:5432/test
+    environment:
+      DATABASE_URL: postgres://postgres:root@db:5432/test
+    depends_on:
+      - db
+    ports:
+      - 4000:4000
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://server:4000
+    depends_on:
+      - server
+    ports:
+      - 3000:3000
+
+volumes:
+  postgres_data:

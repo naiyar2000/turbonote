@@ -1,6 +1,4 @@
-import { create, StateCreator } from "zustand";
-import { devtools } from 'zustand/middleware'
-import { NotesStore } from "./noteStore";
+import {  StateCreator } from "zustand";
 import { PortfolioStore } from "./rootStore";
 
 export type UserStoreType = {

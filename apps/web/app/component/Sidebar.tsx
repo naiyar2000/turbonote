@@ -1,7 +1,7 @@
 // components/sidebar/Sidebar.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SidebarItem } from "./sidebarData";
 import { cn } from "@/lib/utils";
 import {
@@ -10,7 +10,6 @@ import {
   FileText,
   Settings,
   Info,
-  LogOut,
   ChevronDown,
   Edit,
   Trash,
@@ -31,7 +30,6 @@ import { auth, firebaseSignOut } from "@/firebase";
 import { ThemeToggler } from "./ThemeToggler";
 import { useRootStore } from "../store/rootStore";
 import { Skeleton } from "@/components/ui/skeleton";
-import { title } from "process";
 import { useParams, useRouter } from "next/navigation";
 import { deleteNote, fetchNotes, updateNote } from "@/lib/api/notes";
 import { v4 as uuidv4 } from 'uuid';
@@ -64,7 +62,7 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
   const handleTitleSave = async () => {
     setIsEditing(false);
     item.title = tempTitle;
-    let res = await updateNote(item.id, { title: tempTitle })
+    const res = await updateNote(item.id, { title: tempTitle })
     if(res) {
       const newNotes = await fetchNotes();
       if (newNotes) {
@@ -241,7 +239,7 @@ export const Sidebar = ({ itemClick }: { itemClick?: () => void }) => {
             <button onClick={() => {
               console.log(auth.currentUser)
               setCreateNewNote(true);
-              let uuid = uuidv4()
+              const uuid = uuidv4()
               router.push(`/${MY_WORKSPACE}/${uuid}`);
             }} className="p-2 rounded-md hover:bg-muted cursor-pointer">
               <Edit className="h-5 w-5 text-primary" />

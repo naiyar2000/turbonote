@@ -4,18 +4,13 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { firebaseSignOut } from '@/firebase';
-import { Sidebar } from './component/Sidebar';
-import { useRootStore } from './store/rootStore';
 import { Sparkles, LayoutDashboard, Lock } from "lucide-react"
 import LoadingPage from './loading';
-import { v4 as uuidv4 } from 'uuid';
 import { LOGIN, MY_WORKSPACE } from '@/lib/routeConstants';
 
 export default function ProtectedPage() {
   const router = useRouter();
   const { isAuthenticated, loading, token } = useAuth();
-  const { notes } = useRootStore();
 
   useEffect(() => {
     console.log("loading:", loading);

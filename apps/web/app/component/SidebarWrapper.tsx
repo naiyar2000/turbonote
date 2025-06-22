@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
 export const SidebarWrapper = () => {
   const [open, setOpen] = useState(false);

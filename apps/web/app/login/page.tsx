@@ -50,7 +50,9 @@ export default function LoginPage() {
         auth.onAuthStateChanged(async (_user) => {
             if (_user) {
                 const token = await _user.getIdToken()
-                localStorage && localStorage.setItem('token', token)
+                if (localStorage) {
+                    localStorage.setItem('token', token)
+                }
                 await api.post('/api/auth/login', { idToken: token })
                 router.push(`/${MY_WORKSPACE}`)
             }
