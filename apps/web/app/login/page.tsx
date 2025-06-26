@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { FcGoogle } from "react-icons/fc"
 import { MY_WORKSPACE } from '@/lib/routeConstants'
+import LoadingPage from '../loading'
 
 
 export default function LoginPage() {
@@ -59,7 +60,7 @@ export default function LoginPage() {
         })
     }, [])
 
-    if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    if (loading) return <LoadingPage title='Authenticating...' />
 
 
     return (

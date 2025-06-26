@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { SidebarItem } from "./sidebarData";
+import { SidebarItem } from "../sidebarData";
 import { cn } from "@/lib/utils";
 import {
   ChevronRight,
@@ -14,6 +14,8 @@ import {
   Edit,
   Trash,
   Edit2,
+  Search,
+  Home,
 } from "lucide-react";
 import {
   Avatar,
@@ -27,13 +29,15 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { auth, firebaseSignOut } from "@/firebase";
-import { ThemeToggler } from "./ThemeToggler";
-import { useRootStore } from "../store/rootStore";
+import { ThemeToggler } from "../ThemeToggler";
+import { useRootStore } from "../../store/rootStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams, useRouter } from "next/navigation";
 import { deleteNote, fetchNotes, updateNote } from "@/lib/api/notes";
 import { v4 as uuidv4 } from 'uuid';
 import { MY_WORKSPACE } from "@/lib/routeConstants";
+import { Button } from "@/components/ui/button";
+import SearchComponent from "./SearchComponent";
 
 type SidebarItemProps = {
   item: SidebarItem;
@@ -46,7 +50,7 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
   const router = useRouter();
   const params = useParams();
   const pathNoteId = params.id as string;
-  const { setNotes, selectedNote } = useRootStore();
+  const { setNotes, selectedNote, onDialogOpen, onDialogClose, setActionLoader } = useRootStore();
 
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -63,7 +67,7 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
     setIsEditing(false);
     item.title = tempTitle;
     const res = await updateNote(item.id, { title: tempTitle })
-    if(res) {
+    if (res) {
       const newNotes = await fetchNotes();
       if (newNotes) {
         setNotes(newNotes);
@@ -71,16 +75,32 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
     }
   };
 
+  const confirmDelete = (id: string) => {
+    onDialogOpen({
+      title: "Confirm Delete",
+      message: "Do you want to delete this note?",
+      onConfirm: () => {
+        setActionLoader?.(true)
+        handleDelete(id);
+      },
+    })
+
+  }
+
   const handleDelete = async (id: string) => {
     // Implement delete logic here
-    deleteNote(id);
-    const newNotes = await fetchNotes();
-    if (newNotes) {
-      setNotes(newNotes);
-    }
-    if (selectedNote?.id === id) {
-      const newNoteId = newNotes.length > 0 ? newNotes[0].id : uuidv4();
-      router.push(`/${MY_WORKSPACE}/${newNoteId}`);
+    let res = await deleteNote(id);
+    if (res) {
+      setActionLoader?.(false);
+      onDialogClose();
+      const newNotes = await fetchNotes();
+      if (newNotes) {
+        setNotes(newNotes);
+      }
+      if (selectedNote?.id === id) {
+        const newNoteId = newNotes.length > 0 ? newNotes[0].id : uuidv4();
+        router.push(`/${MY_WORKSPACE}/${newNoteId}`);
+      }
     }
   };
 
@@ -88,7 +108,7 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
     <div className="w-full">
       <div
         className={cn(
-          "group flex items-center gap-2 px-2 py-1 rounded-md hover:bg-muted/80 cursor-pointer transition-colors",
+          "group flex items-center w-full gap-2 px-2 py-1 rounded-md hover:bg-muted/80 cursor-pointer transition-colors",
           {
             [`pl-${(level + 1) * 4}`]: true,
             "bg-muted/100": pathNoteId === item.id.toString() || (item.type === "folder" && open),
@@ -103,15 +123,13 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
           }
         }}
       >
-        {hasChildren ? (
+        {hasChildren &&
           <ChevronRight
             className={cn("h-5 w-5 transition-transform", {
               "rotate-90": open,
             })}
           />
-        ) : (
-          <span className="w-5" />
-        )}
+        }
 
         {
           !isEditing && <Edit2
@@ -143,11 +161,11 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
                 setIsEditing(false);
               }
             }}
-            className="bg-transparent border border-muted text-lg px-1 rounded focus:outline-none w-full"
+            className="bg-transparent border border-muted text-sm px-1 rounded focus:outline-none w-full"
           />
         ) : (
           <span
-            className="text-lg truncate"
+            className="text-sm truncate"
           >
             {item.title}
           </span>
@@ -159,7 +177,7 @@ const SidebarItemComponent = ({ item, itemClick, level = 0, }: SidebarItemProps)
               className="h-4 w-4 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(item.id);
+                confirmDelete(item.id)
               }}
             />
           </div>
@@ -197,20 +215,20 @@ export const Sidebar = ({ itemClick }: { itemClick?: () => void }) => {
     type: "page",
   }))
   return (
-    <aside className="w-80 h-screen flex flex-col bg-background border-r border-muted text-foreground">
+    <aside className="w-full h-screen flex flex-col bg-background border-r border-muted text-foreground">
 
       {/* Workspace header */}
       {
         user ? (
-          <div className="px-4 py-3 flex items-center justify-between border-b border-muted">
+          <div className="px-2 py-3 flex items-center justify-between border-b border-muted">
             <Popover>
               <PopoverTrigger asChild>
                 <button className="flex items-center gap-2 cursor-pointer hover:bg-muted px-2 py-1 rounded-md transition-colors w-full text-left">
-                  <Avatar className="h-6 w-6 rounded-sm">
+                  <Avatar className="h-5 w-5 rounded-sm">
                     <AvatarImage src={user?.image ?? ""} alt="User" />
                     <AvatarFallback>{initialAvatar}</AvatarFallback>
                   </Avatar>
-                  <span className="text-lg font-medium">{user?.name}</span>
+                  <span className="text-md font-medium">{user?.name}</span>
                   <ChevronDown className="h-4 w-4 ml-auto" />
                 </button>
               </PopoverTrigger>
@@ -250,10 +268,25 @@ export const Sidebar = ({ itemClick }: { itemClick?: () => void }) => {
             <Skeleton className="h-6 w-3/4" />
           </div>
       }
+
+      {/* Footer section */}
+      {user && <div className="px-4 py-3 border-t border-muted space-y-2">
+        <SearchComponent />
+        <Link
+          href={`/${MY_WORKSPACE}`}
+          className="flex items-center gap-2 text-sm hover:bg-muted px-2 py-1 rounded-md"
+        >
+          <Home className="h-5 w-5" />
+          Home
+        </Link>
+      </div>
+      }
+
       {/* Scrollable Pages section */}
       {
         user ?
           <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
+            <p className="pl-3 mb-2 text-sm font-semibold">Private</p>
             {sidebarItems.map((item) => (
               <SidebarItemComponent itemClick={itemClick} key={item.id} item={item} />
             ))}
@@ -269,24 +302,26 @@ export const Sidebar = ({ itemClick }: { itemClick?: () => void }) => {
       }
 
       {/* Footer section */}
-      <div className="px-4 py-3 border-t border-muted space-y-2">
-        <Link
-          href="/settings"
-          onClick={() => itemClick?.()}
-          className="flex items-center gap-2 text-lg hover:bg-muted px-2 py-1 rounded-md"
-        >
-          <Settings className="h-5 w-5" />
-          Settings & Members
-        </Link>
-        <Link
-          href="/about"
-          onClick={() => itemClick?.()}
-          className="flex items-center gap-2 text-lg hover:bg-muted px-2 py-1 rounded-md"
-        >
-          <Info className="h-5 w-5" />
-          About Notion
-        </Link>
-      </div>
+      {user &&
+        <div className="px-4 py-3 border-t border-muted space-y-2">
+          <Link
+            href="/settings"
+            onClick={() => itemClick?.()}
+            className="flex items-center gap-2 text-sm hover:bg-muted px-2 py-1 rounded-md"
+          >
+            <Settings className="h-5 w-5" />
+            Settings & Members
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => itemClick?.()}
+            className="flex items-center gap-2 text-sm hover:bg-muted px-2 py-1 rounded-md"
+          >
+            <Info className="h-5 w-5" />
+            About Notion
+          </Link>
+        </div>
+      }
     </aside>
   );
 };

@@ -6,6 +6,7 @@ import {
   getNoteByIdService,
   updateNoteService,
   deleteNoteService,
+  searchNoteService,
 } from "../services/note.service";
 
 // GET /api/notes
@@ -51,3 +52,14 @@ export const deleteNote = async (req: Request, res: Response) => {
 
   res.json({ message: "Deleted successfully" });
 };
+
+// Search /api/notes/search?q=&userId=
+export const searchNote = async(req: Request, res: Response) => {
+    const {q, userId} = req.query
+
+    const response = await searchNoteService(q as string, userId as string);
+
+    if(!response) return res.status(404).json({message: "No notes found"});
+
+    res.json(response);
+}

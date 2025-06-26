@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useFirebaseAuthTokenSync } from '@/hooks/useFirebaseAuthToken';
 import LoadingPage from '../loading';
-import { SidebarWrapper } from '../component/SidebarWrapper';
 import { LOGIN } from '@/lib/routeConstants';
+import PromptDialog from '../component/dialog/PromptDialog';
+import { SidebarWrapper } from '../component/sidebar/SidebarWrapper';
 
 export default function ProtectedLayout({
     children,
@@ -24,16 +25,19 @@ export default function ProtectedLayout({
         }
     }, [loading, isAuthenticated, router]);
 
-    if (loading) return <LoadingPage title='Checking Permissions...'/>;
+    if (loading) return <LoadingPage title='Checking Permissions...' />;
     if (!isAuthenticated) return <LoadingPage title={"Checking Permissions..."} />;
 
 
     return (
-        <div className='flex bg-secondary'>
-            <SidebarWrapper />
-            <div className="h-screen w-screen flex-1 flex flex-col p-4">
-                {children}
+        <>
+            <PromptDialog />
+            <div className='flex bg-secondary'>
+                <SidebarWrapper />
+                <div className="h-screen overflow-auto flex-1 flex flex-col p-0 md:p-4">
+                    {children}
+                </div>
             </div>
-        </div>
+        </>
     );
 }

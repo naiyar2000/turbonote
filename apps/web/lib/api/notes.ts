@@ -63,3 +63,13 @@ export const deleteNote = async (id: string) => {
 
     return response;
 };
+
+export const searchNotes = async(q:string, userId: string) => {
+    const response = await fetchWrapper(`api/notes/search?q=${q}&userId=${userId}`);
+
+    if(!response) {
+        throw new Error("No result");
+    }
+
+    return response;
+}

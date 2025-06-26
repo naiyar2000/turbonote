@@ -48,3 +48,6 @@ coverage/
 # Misc
 *.tgz
 *.bak
+
+#sh files
+*.sh

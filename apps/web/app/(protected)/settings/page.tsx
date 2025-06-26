@@ -27,7 +27,7 @@ const SettingsPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 sm:px-6 sm:py-6 py-10 w-full max-w-4xl mx-auto">
+    <div className="flex flex-col gap-6 p-6 w-full max-w-4xl mx-auto">
       <h1 className="text-2xl sm:text-3xl font-bold">Settings</h1>
 
       <Card>

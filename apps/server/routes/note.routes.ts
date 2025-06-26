@@ -1,9 +1,16 @@
 // server/routes/note.routes.ts
 import express from "express";
-import { createNote, deleteNote, getAllNotes, getNoteById, updateNote } from "../controllers/note.controller";
+import { createNote, deleteNote, getAllNotes, getNoteById, searchNote, updateNote } from "../controllers/note.controller";
 import { verifyFirebaseToken } from "../middlewares/authMiddleware";
 
 const router = express.Router();
+
+
+router.get("/search", (req, res, next) => {
+    verifyFirebaseToken(req, res, next);
+}, (req, res) => {
+    searchNote(req, res);
+});
 
 router.get(
     "/",

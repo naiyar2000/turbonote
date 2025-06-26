@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@elastic/elasticsearch": "^9.0.2",
+    "@repo/db": "*",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -20,8 +22,7 @@
     "nodemon": "^3.1.10",
     "prisma": "^6.9.0",
     "socket.io": "^4.8.1",
-    "ts-node": "^10.9.2",
-    "@repo/db": "*"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

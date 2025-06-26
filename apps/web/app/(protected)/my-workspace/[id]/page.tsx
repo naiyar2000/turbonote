@@ -16,28 +16,6 @@ const HomePage = () => {
 
     const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "unsaved">("unsaved");
 
-    // const handleSave = async (content: PartialBlock[]) => {
-    //     try {
-    //         if (id === "new") {
-    //             const newNote = await createNote({
-    //                 id: id,
-    //                 title: "New Note",
-    //                 contentBlocks: content,
-    //                 authorId: user?.id || "",
-    //             });
-    //             console.log("Note created successfully:", newNote);
-    //         } else {
-    //             const updatedNote = await updateNote(id, {
-    //                 title: selectedNote?.title || "Updated Note",
-    //                 contentBlocks: content,
-    //             });
-    //             console.log("Note updated successfully:", updatedNote);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error creating note:", error);
-    //     }
-    // }
-
     const fetchNotesDetails = async () => {
         try {
             setNotesLoading(true);
@@ -87,7 +65,7 @@ const HomePage = () => {
     const authorName = user?.name || "Unknown Author";
     const lastUpdated = noteData?.updatedAt ? new Date(noteData.updatedAt).toLocaleString() : "Never";
     return (
-        <div className="flex flex-col h-full md:pt-0 pt-12">
+        <div className="flex flex-col h-full">
             {/* Sticky Editor Header */}
             {!loading && (
                 <header className="sticky top-0 z-10 md:flex justify-between items-center border-b bg-background px-4 sm:px-6 py-2 sm:py-3">
