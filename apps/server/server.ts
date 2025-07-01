@@ -1,6 +1,10 @@
 import http from "http"
 import app from "./app";
+import dotenv from "dotenv";
 import { initSocketServer } from "./socket";
+
+dotenv.config();
+
 
 const PORT = process.env.PORT || 4000;
 

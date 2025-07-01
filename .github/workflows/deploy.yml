@@ -1,0 +1,41 @@
+name: Rebuild and Push Docker Image with Clean Tag
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Delete old :latest tag from Docker Hub
+        run: |
+          curl -X DELETE -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" \
+          https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/turbonote_ui/tags/latest/
+        continue-on-error: true  # ignore if tag doesn't exist
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build new Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/turbonote_ui:latest -f docker/web.Dockerfile .
+
+      - name: Push new Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/turbonote_ui:latest
+
+      - name: Trigger Render redeploy
+        run: |
+          curl --request POST \
+            --url https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys \
+            --header 'accept: application/json' \
+            --header 'authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
+            --header 'content-type: application/json' \
+            --data '{
+              "clearCache": "do_not_clear",
+              "imageUrl": "docker.io/nirock2000/turbonote_ui:latest"
+            }'
