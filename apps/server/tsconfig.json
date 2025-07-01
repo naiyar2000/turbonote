@@ -16,7 +16,8 @@
     "**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "firebase-service-account.json"
   ],
   "extends": "../../tsconfig.json"
 }
