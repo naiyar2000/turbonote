@@ -15,11 +15,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Delete old :latest tag from Docker Hub
-        run: |
-          curl -X DELETE -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" \
-          https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/turbonote_ui/tags/latest/
-        continue-on-error: true  # ignore if tag doesn't exist
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies (monorepo root)
+        run: npm install
+
+      # - name: Delete old :latest tag from Docker Hub
+      #   run: |
+      #     curl -X DELETE -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" \
+      #     https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/turbonote_ui/tags/latest/
+      #   continue-on-error: true  # ignore if tag doesn't exist
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
