@@ -6,6 +6,21 @@ on:
       - main
 
   workflow_dispatch:
+    inputs:
+        service_id:
+          description: 'Service ID(1. UI; 2. Server)'
+          required: true
+          type: choice
+          options:
+            - srv-d1epn77fte5s73ffdab0
+            - srv-xyz123example0000
+        repo_name:
+          description: 'Select DockerHub repo'
+          required: true
+          type: choice
+          options:
+            - nirock2000/turbonote_ui
+            - nirock2000/turbonote_backend
 
 jobs:
   deploy:
@@ -44,10 +59,10 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build new Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/turbonote_ui:latest -f docker/web.Dockerfile .
+        run: docker build -t ${{ github.event.inputs.repo_name }}:latest -f docker/web.Dockerfile .
 
       - name: Push new Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/turbonote_ui:latest
+        run: docker push ${{ github.event.inputs.repo_name }}:latest
 
       - name: Trigger Render redeploy
         run: |
@@ -58,5 +73,5 @@ jobs:
             --header 'content-type: application/json' \
             --data '{
               "clearCache": "do_not_clear",
-              "imageUrl": "docker.io/nirock2000/turbonote_ui:latest"
+              "imageUrl": "docker.io/${{ github.event.inputs.repo_name }}:latest"
             }'
