@@ -32,6 +32,10 @@ jobs:
           echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> apps/web/.env
           echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> apps/web/.env
           echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> apps/web/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> apps/server/.env
+          echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> apps/server/.env
+          echo "ELASTICSEARCH_API_KEY=${{ secrets.ELASTICSEARCH_API_KEY }}" >> apps/server/.env
+          echo "ELASTICSEARCH_NODE=${{ secrets.ELASTICSEARCH_NODE }}" >> apps/server/.env
 
       - name: Write Firebase service account key
         run: |
@@ -57,9 +61,9 @@ jobs:
       - name: Set Dockerfile path based on repo
         id: dockerfile
         run: |
-          if [ "${{ github.event.inputs.repo_name }}" = "turbonote_ui" ]; then
+          if [ "${{ github.event.inputs.repo_name }}" = "nirock2000/turbonote_ui" ]; then
             echo "DOCKERFILE=docker/web.Dockerfile" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event.inputs.repo_name }}" = "turbonote_backend" ]; then
+          elif [ "${{ github.event.inputs.repo_name }}" = "nirock2000/turbonote_backend" ]; then
             echo "DOCKERFILE=docker/server.Dockerfile" >> "$GITHUB_OUTPUT"
           else
             echo "Unknown repo_name: ${{ github.event.inputs.repo_name }}"
