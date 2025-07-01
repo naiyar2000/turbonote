@@ -58,8 +58,20 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      - name: Set Dockerfile path based on repo
+        id: dockerfile
+        run: |
+          if [ "${{ github.event.inputs.repo_name }}" = "turbonote_ui" ]; then
+            echo "DOCKERFILE=docker/web.Dockerfile" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.inputs.repo_name }}" = "turbonote_backend" ]; then
+            echo "DOCKERFILE=docker/server.Dockerfile" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unknown repo_name: ${{ github.event.inputs.repo_name }}"
+            exit 1
+          fi
+
       - name: Build new Docker image
-        run: docker build -t ${{ github.event.inputs.repo_name }}:latest -f docker/web.Dockerfile .
+        run: docker build -t ${{ github.event.inputs.repo_name }}:latest -f ${{ steps.dockerfile.outputs.DOCKERFILE }} .
 
       - name: Push new Docker image
         run: docker push ${{ github.event.inputs.repo_name }}:latest
