@@ -39,7 +39,7 @@ jobs:
 
       - name: Write Firebase service account key
         run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}" > apps/server/firebase-service-account.json
+          echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }} > apps/server/firebase-service-account.json
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
