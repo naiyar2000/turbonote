@@ -1,10 +1,6 @@
 name: Rebuild and Push Docker Image with Clean Tag
 
 on:
-  push:
-    branches:
-      - main
-
   workflow_dispatch:
     inputs:
         service_id:
@@ -13,7 +9,7 @@ on:
           type: choice
           options:
             - srv-d1epn77fte5s73ffdab0
-            - srv-xyz123example0000
+            - srv-d1epkimuk2gs73bfr5ag
         repo_name:
           description: 'Select DockerHub repo'
           required: true
