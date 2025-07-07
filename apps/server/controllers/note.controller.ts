@@ -57,7 +57,7 @@ export const deleteNote = async (req: Request, res: Response) => {
 export const searchNote = async(req: Request, res: Response) => {
     const {q, userId} = req.query
 
-    const response = await searchNoteService(q as string, userId as string);
+    const response = await searchNoteService("meili", q as string, userId as string);
 
     if(!response) return res.status(404).json({message: "No notes found"});
 

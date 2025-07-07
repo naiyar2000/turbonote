@@ -1,6 +1,7 @@
 // server/services/note.service.ts
 import { Note, PrismaClient } from "@repo/db/prisma/generated/client"
 import { esClient } from "../lib/elastic";
+import { meili } from "../lib/meili";
 
 const prisma = new PrismaClient();
 
@@ -84,8 +85,20 @@ export const deleteNoteService = async (id: string) => {
 };
 
 
-export const searchNoteService = async (q: string, userId: string) => {
+export const searchNoteService = async (type: "elastic" | "meili", q: string, userId: string) => {
   if (!q || !userId) return null
+  if (type === "meili") {
+    let res = await meili.index('notes').search(q, {
+      "attributesToHighlight": ["content"]
+    });
+    const notes = res.hits.map((hit: any) => ({
+      id: hit.id,
+      title: hit.title,
+      tags: null,
+      snippet: hit._formatted?.content || '',
+    }));
+    return notes;
+  }
   const result = await esClient.search({
     index: 'notes',
     query: {
@@ -133,15 +146,43 @@ const addUpdateNoteSearchIndex = async (note: Note) => {
       : (note.contentBlocks as ContentBlock[]);
   const flatText = flattenNoteBlocks(contentBlocksArray);
 
-  await esClient.index({
-    index: 'notes',
-    id: note.id,
-    document: {
-      title: note.title,
-      tags: note.tags,
-      userId: note.authorId,
-      flattenedText: flatText,
-      // contentBlocks: note.contentBlocks, // Optional: if you want to reference in highlight
-    },
-  });
+  await storeNoteForSearch({
+    type: "meili",
+    note: note,
+    flatText: flatText
+  })
+}
+
+const storeNoteForSearch = async ({ type, note, flatText }: { type: "elastic" | "meili", note: Note, flatText: string }) => {
+  const meilieSearchEngineClient = meili.index('notes')
+  switch (type) {
+    case "elastic":
+      await esClient.index({
+        index: 'notes',
+        id: note.id,
+        document: {
+          title: note.title,
+          tags: note.tags,
+          userId: note.authorId,
+          flattenedText: flatText,
+          // contentBlocks: note.contentBlocks, // Optional: if you want to reference in highlight
+        },
+      });
+      break;
+    case "meili":
+      console.log("storing meili index")
+      console.log("storing meili content==>", flatText)
+      let res = await meilieSearchEngineClient.updateDocuments([
+        {
+          id: note.id.toString(),
+          title: note.title,
+          author: note.authorId,
+          content: flatText,
+        },
+      ])
+      console.log("stored meili index res===> ", res)
+      break;
+    default:
+      console.log("nothing stored")
+  }
 }

@@ -1,6 +1,11 @@
 import admin from "firebase-admin";
-import fs from 'fs';
 
+//for json file(uncomment below line to running locally)
+// import serviceAccount from '../firebase-service-account.json'
+
+
+//for utf8 encoded file(for storing and retrieving config json from github secrets)
+import fs from 'fs';
 const serviceAccount = JSON.parse(
   fs.readFileSync('../firebase-service-account.json', 'utf8')
 );

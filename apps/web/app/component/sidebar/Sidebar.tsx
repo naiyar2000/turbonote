@@ -225,7 +225,7 @@ export const Sidebar = ({ itemClick }: { itemClick?: () => void }) => {
               <PopoverTrigger asChild>
                 <button className="flex items-center gap-2 cursor-pointer hover:bg-muted px-2 py-1 rounded-md transition-colors w-full text-left">
                   <Avatar className="h-5 w-5 rounded-sm">
-                    <AvatarImage src={user?.image ?? ""} alt="User" />
+                    <AvatarImage src={user.image} alt="User" />
                     <AvatarFallback>{initialAvatar}</AvatarFallback>
                   </Avatar>
                   <span className="text-md font-medium">{user?.name}</span>

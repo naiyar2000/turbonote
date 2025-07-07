@@ -36,6 +36,8 @@ jobs:
           echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> apps/server/.env
           echo "ELASTICSEARCH_API_KEY=${{ secrets.ELASTICSEARCH_API_KEY }}" >> apps/server/.env
           echo "ELASTICSEARCH_NODE=${{ secrets.ELASTICSEARCH_NODE }}" >> apps/server/.env
+          echo "MEILI_URL=${{ secrets.MEILI_URL }}" >> apps/server/.env
+          echo "MEILI_MASTER_KEY=${{ secrets.MEILI_MASTER_KEY }}" >> apps/server/.env
 
       - name: Write Firebase service account key
         run: |
