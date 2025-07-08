@@ -10,9 +10,15 @@ import {
 } from "../services/note.service";
 
 // GET /api/notes
-export const getAllNotes = async (_req: Request, res: Response) => {
-  const notes = await getAllNotesService();
-  res.json(notes);
+export const getAllNotes = async (req: Request, res: Response) => {
+  console.log("user details==> ",(req as any)?.user)
+  const userData = (req as any)?.user;
+  if(userData) {
+    const notes = await getAllNotesService(userData?.uid);
+    res.json(notes);
+  } else {
+    res.json({message: "Something went wrong!"})
+  }
 };
 
 // GET /api/notes/:id

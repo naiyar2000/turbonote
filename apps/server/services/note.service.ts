@@ -28,8 +28,8 @@ export function flattenNoteBlocks(blocks: ContentBlock[]): string {
 
 
 // const prisma = new PrismaClient();
-export const getAllNotesService = async () => {
-  return prisma.note.findMany({ include: { attachments: true, author: true }, omit: { contentBlocks: true } });
+export const getAllNotesService = async (id: string) => {
+  return prisma.note.findMany({ include: { attachments: true, author: true }, omit: { contentBlocks: true }, where: { id: id } });
 };
 
 export const getNoteByIdService = async (id: string) => {
