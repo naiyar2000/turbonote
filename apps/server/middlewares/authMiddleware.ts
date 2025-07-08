@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { auth } from "../utils/firebase";
+import { PrismaClient } from "@repo/db/prisma/generated/client";
+
+const prisma = new PrismaClient();
 
 export const verifyFirebaseToken = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split("Bearer ")[1];
@@ -8,7 +11,11 @@ export const verifyFirebaseToken = async (req: Request, res: Response, next: Nex
 
   try {
     const decodedToken = await auth.verifyIdToken(token);
-    (req as any).user = decodedToken;
+    const { email } = decodedToken;
+    const userData = await prisma.user.findUnique({ where: { email } })
+    if (userData?.email) {
+      (req as any).user = userData;
+    }
     next();
   } catch (error) {
     return res.status(401).json({ error: "Unauthorized" });

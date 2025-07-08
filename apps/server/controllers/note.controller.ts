@@ -8,13 +8,14 @@ import {
   deleteNoteService,
   searchNoteService,
 } from "../services/note.service";
+import { User } from "packages/db/prisma/generated/client";
 
 // GET /api/notes
 export const getAllNotes = async (req: Request, res: Response) => {
   console.log("user details==> ",(req as any)?.user)
-  const userData = (req as any)?.user;
+  const userData = ((req as any)?.user as User);
   if(userData) {
-    const notes = await getAllNotesService(userData?.uid);
+    const notes = await getAllNotesService(userData);
     res.json(notes);
   } else {
     res.json({message: "Something went wrong!"})

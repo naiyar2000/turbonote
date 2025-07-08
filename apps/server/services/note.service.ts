@@ -1,5 +1,5 @@
 // server/services/note.service.ts
-import { Note, PrismaClient } from "@repo/db/prisma/generated/client"
+import { Note, PrismaClient, User } from "@repo/db/prisma/generated/client"
 import { esClient } from "../lib/elastic";
 import { meili } from "../lib/meili";
 
@@ -28,8 +28,8 @@ export function flattenNoteBlocks(blocks: ContentBlock[]): string {
 
 
 // const prisma = new PrismaClient();
-export const getAllNotesService = async (id: string) => {
-  return prisma.note.findMany({ include: { attachments: true, author: true }, omit: { contentBlocks: true }, where: { id: id } });
+export const getAllNotesService = async (user: User) => {
+  return prisma.note.findMany({ include: { attachments: true, author: true }, omit: { contentBlocks: true }, where: { author: user } });
 };
 
 export const getNoteByIdService = async (id: string) => {
