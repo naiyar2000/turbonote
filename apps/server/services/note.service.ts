@@ -54,7 +54,7 @@ export const createNoteService = async (
   });
 
 
-  addUpdateNoteSearchIndex(note);
+  // addUpdateNoteSearchIndex(note);
 
   return note;
 };
@@ -67,7 +67,7 @@ export const updateNoteService = async (id: string, data: any) => {
       data,
     });
 
-    addUpdateNoteSearchIndex(updatedNote);
+    // addUpdateNoteSearchIndex(updatedNote);
     return updatedNote;
   } catch {
     console.error("Error updating note with ID:", id);

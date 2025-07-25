@@ -45,7 +45,7 @@ const SearchComponent = () => {
     return (
         <Dialog onOpenChange={() => setSearchResult([])}>
             <form>
-                <DialogTrigger asChild>
+                <DialogTrigger asChild disabled={true}>
                     <div
                         className={cn(
                             "group flex items-center w-full gap-2 px-2 py-1 rounded-md hover:bg-muted/80 cursor-pointer transition-colors",
@@ -61,7 +61,7 @@ const SearchComponent = () => {
                     <DialogTitle></DialogTitle>
                     <DialogHeader>
                         <div className="relative">
-                            <Input onChange={_searchNote} type="text" placeholder='Search for any content...' className="pl-8" />
+                            <Input disabled onChange={_searchNote} type="text" placeholder='Search for any content...' className="pl-8" />
                             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         </div>
                     </DialogHeader>
@@ -102,7 +102,8 @@ const SearchListItems = ({ searchResult }: { searchResult: NoteSnippet[] }) => {
             className={'flex flex-col items-center justify-center h-full w-full m-auto'}
         >
             <FileWarning className="h-10 w-10 text-primary" />
-            <p className="mt-4 text-lg text-muted-foreground">{"No content found"}</p>
+            {/* <p className="mt-4 text-lg text-muted-foreground">{"No content found"}</p> */}
+            <p className="mt-4 text-lg text-muted-foreground">{"Search feature coming soon"}</p>
         </div>
     }
 
