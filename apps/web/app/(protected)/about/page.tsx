@@ -8,40 +8,37 @@ export default function AboutPage() {
       <h1 className="text-2xl sm:text-4xl font-bold mb-4">About This App</h1>
 
       <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">
-        This application is a modern, Notion-inspired note-taking platform designed and developed by <strong>Naiyar</strong>. It provides a rich editing experience, structured content management, and a developer-friendly architecture.
+        Welcome! This app is a modern, Notion-inspired note-taking platform created by <strong>Naiyar</strong>. It’s designed to help you organize your thoughts, ideas, and projects in a simple, beautiful, and efficient way.
       </p>
 
-      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">🔧 Tech Stack</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">✨ What You Can Do</h2>
       <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm sm:text-base">
-        <li><strong>Frontend:</strong> Next.js 14 with App Router, React, TailwindCSS, ShadCN UI</li>
-        <li><strong>Editor:</strong> <code>@blocknote/mantine</code> for a clean, WYSIWYG editing experience</li>
-        <li><strong>Auth:</strong> Firebase Authentication (with token-based auth)</li>
-        <li><strong>Backend:</strong> Node.js + Express with Firebase Admin SDK for token validation</li>
-        <li><strong>Database:</strong> PostgreSQL via Prisma ORM</li>
-        <li><strong>File Storage:</strong> AWS S3 (planned/integrated)</li>
+        <li>Create and organize notes in folders, just like you would in Notion</li>
+        <li>Edit your notes with a clean and easy-to-use editor</li>
+        <li>Keep your notes safe and private with secure sign-in</li>
+        <li>Switch between light and dark themes to match your mood</li>
+        <li>Enjoy a smooth, fast, and responsive experience on any device</li>
       </ul>
 
-      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">🧠 Features</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">🌟 Why You'll Love It</h2>
       <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm sm:text-base">
-        <li>Nested folder & file structure like Notion</li>
-        <li>Real-time rich text editing with BlockNote</li>
-        <li>Authentication-protected routes with token middleware</li>
-        <li>Theme toggle support (light/dark) across the app</li>
-        <li>API integration-ready via wrapper-based axios setup</li>
-        <li>Shimmer loading states & animated interactions</li>
+        <li>Simple and intuitive design that gets out of your way</li>
+        <li>Organize everything from quick notes to big projects</li>
+        <li>Stay focused with distraction-free writing</li>
+        <li>Access your notes anywhere, anytime</li>
       </ul>
 
-      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">📦 Roadmap</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold mt-6 mb-2">🚀 What's Next</h2>
       <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm sm:text-base">
-        <li>Collaborative editing with WebSocket integration</li>
-        <li>Search, tag, and archive system for notes</li>
-        <li>Role-based access and sharing</li>
-        <li>Offline support & progressive enhancement</li>
+        <li>Work together with friends and teammates in real time</li>
+        <li>Find your notes quickly with powerful search and tags</li>
+        <li>Share notes and control who can view or edit them</li>
+        <li>Use the app even when you’re offline</li>
       </ul>
 
       <p className="mt-8 text-muted-foreground italic text-sm sm:text-base">
-        Built with passion, minimalism, and a desire to learn deeply. 💻
+        Built with care to help you capture ideas and stay organized. Happy note-taking! 📝
       </p>
-    </div>
+      </div>
   );
 }
